@@ -703,7 +703,8 @@ function	OnCHASE_ST ()
 				EnemyPosX = {0,0,0,0,0,0,0,0,0,0}
 				EnemyPosY = {0,0,0,0,0,0,0,0,0,0}
 				MyDestX,MyDestY=0,0
-		        ChaseGiveUpCount=0
+				ChaseGiveUpCount=0
+
 				return OnFOLLOW_ST()
 			elseif AllTargetUnreachable==1 then
 				MyState = FOLLOW_ST
@@ -713,6 +714,7 @@ function	OnCHASE_ST ()
 				MyEnemy = 0
 				EnemyPosX = {0,0,0,0,0,0,0,0,0,0}
 				EnemyPosY = {0,0,0,0,0,0,0,0,0,0}
+
 				return OnFOLLOW_ST()
 			else 
 				MyState = IDLE_ST
@@ -724,6 +726,7 @@ function	OnCHASE_ST ()
 				EnemyPosY = {0,0,0,0,0,0,0,0,0,0}
 				if (FastChangeCount < FastChangeLimit and FastChange_C2I == 1) then
 					FastChangeCount = FastChangeCount+1
+
 					return OnIDLE_ST()
 				else
 					return
@@ -3296,9 +3299,11 @@ function AI(myid)
 	local seralegionActive=0
 	local seralegionBugged=0
 	for i,v in ipairs(actors) do
-		-- TraceAI("\nIsMonster?: "..IsMonster(v).. " \nMonsterID: "..v.."\n")
+		-- TraceAI2("\nIsMonster?: "..IsMonster(v).. " \nMonsterID: "..v.."\n")
+
 		local x,y = GetV(V_POSITION,v)
 		TakenCells[x.."_"..y]=1
+
 		if AAIActors[v]~=1 then
 			if IsHomun(myid)==1 then
 				logappend("AAI_ACTORS","Actor "..v.." type "..GetV(V_HOMUNTYPE,v).." at "..x..","..y.." Is M="..IsMonster(v))
@@ -3355,11 +3360,13 @@ function AI(myid)
 						end	
 					end
 				elseif IsMonster(v)==1 then
-					-- TraceAI("\n"..v.." of type "..GetV(V_HOMUNTYPE,v).." is a monster\n")
+					-- TraceAI2("\n"..v.." of type "..GetV(V_HOMUNTYPE,v).." is a monster\n")
+
 					if LiveMobID == 1 and IsHomun(MyID)==1 then
 						tMobID=tMobID.."MobID["..v.."]="..GetV(V_HOMUNTYPE,v).."\n"
 					end
 					Monsters[v]=1
+
 					if (v < MagicNumber) then
 						Summons[v]=1
 					end
@@ -3405,26 +3412,6 @@ function AI(myid)
 		else
 			logappend("AAI_ERROR", "Failed to load MobID from "..AggressiveRelogPath.."MobID.lua")
 		end
-	end
-	if GetV(V_HOMUNTYPE,MyID)==SERA then
-		for t=1,4 do
-			SeraLegionTotalHist[t+1]=SeraLegionTotalHist[t]
-			SeraLegionBugHist[t+1]=SeraLegionBugHist[t]
-		end
-		SeraLegionTotalHist[1]=seralegionCount
-		SeraLegionBugHist[1]=seralegionBugged
-		SeraLegionCount=math.max(SeraLegionTotalHist[1],SeraLegionTotalHist[2],SeraLegionTotalHist[3],SeraLegionTotalHist[4],SeraLegionTotalHist[5])
-		SeraLegionBugged=math.min(SeraLegionBugHist[1],SeraLegionBugHist[2],SeraLegionBugHist[3],SeraLegionBugHist[4],SeraLegionBugHist[5])
-		SeraLegionActive=SeraLegionCount-SeraLegionBugged
-		if SeraLegionCount==0 and GetTick() > AutoSkillTimeout then
-			--Why are we in cooldown when there are no bugs out? Cast must have failed, or something killed them. 
-			AutoSkillCooldown[MH_SUMMON_LEGION]=1
-			TraceAI("Sera Legion: Legion cooldown canceled, bugs not present")
-		elseif SeraLegionBugged > 2 then
-			AutoSkillCooldown[MH_SUMMON_LEGION]=1
-			TraceAI("Sera Legion: Legion cooldown canceled, bugs bugged")
-		end
-		--logappend("AAI_Legion","Sera Legion - "..SeraLegionCount.." bugs out "..SeraLegionActive.." active and "..SeraLegionBugged.." bugged. "..SeraLegionList)
 	end
 	if PVPmode==1 then
 		for k,v in pairs(Players) do
