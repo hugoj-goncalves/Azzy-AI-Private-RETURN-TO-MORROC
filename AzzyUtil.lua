@@ -1861,11 +1861,9 @@ function GetAtkSkill(myid)
 
 			if (illusionOfBreathLevel == 0) then
 				level = 0
-			elseif (GetTick() < AutoSkillCooldown[skill]) then
+			elseif (UseSkillOnly ~= 1 and GetTick() < AutoSkillCooldown[skill]) then
 				level = 0
 				skill = 0
-			elseif (illusionOfBreathLevel == nil and illusionOfBreathLevel > 0) then
-				level = 10
 			else
 				level = illusionOfBreathLevel
 			end
