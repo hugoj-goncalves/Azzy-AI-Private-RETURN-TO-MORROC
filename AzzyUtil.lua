@@ -1291,8 +1291,6 @@ function	IsInAttackSight (myid,target,skill,level)
 	end
 end
 
-
-
 function AttackRange(myid,skill,level)
 	if (skill==nil or level== nil) then
 		if skill==nil or level==nil then
@@ -2342,10 +2340,24 @@ function GetTargetedSkills(myid)
 	return result
 end
 
+function dump(o)
+   if type(o) == 'table' then
+      local s = '{ '
+      for k,v in pairs(o) do
+         if type(k) ~= 'number' then k = '"'..k..'"' end
+         s = s .. '['..k..'] = ' .. dump(v) .. ','
+      end
+      return s .. '} '
+   else
+      return tostring(o)
+   end
+end
+
 function GetSkillInfo(skill, info, level)
 	if (skill ~= nil and info ~= nil) then
 		if SkillInfo[skill] ~= nil then
 			local skillInfoResult = SkillInfo[skill][info]
+			-- TraceAI("GetSkillInfo skill: " .. skill .. " level: " .. level .. " - " .. dump(skillInfoResult) .. " t: " .. SkillInfo[skill][info][level])
 
 			if skillInfoResult ~= nil then
 				if (level == nil and type(skillInfoResult) == "table") then

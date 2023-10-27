@@ -14,9 +14,9 @@ MyRoute={{0,0}}
 
 illusionOfClawsLevel = 5
 illusionOfBreathLevel = 10
-chaoticHealLevel = 5
-bodyDoubleLevel = 5
-warmDefLevel = 5
+chaoticHealLevel = 3
+bodyDoubleLevel = 0
+warmDefLevel = 0
 
 FriendAttack={}			--Set these to 1 to have homun attack 
 				--the target of a friend/owner when the friend is:

@@ -540,7 +540,8 @@ end
 
 function	OnFOLLOW_ST ()
 
-	TraceAI ("OnFOLLOW_ST - follow try count: "..FollowTryCount.." ownerpos: "..formatpos(GetV(V_POSITION,GetV(V_OWNER,MyID))).."my pos history:"..formatmypos(10))
+	TraceAI ("OnFOLLOW_ST")
+	-- TraceAI ("OnFOLLOW_ST - follow try count: "..FollowTryCount.." ownerpos: "..formatpos(GetV(V_POSITION,GetV(V_OWNER,MyID))).."my pos history:"..formatmypos(10))
 	local dist = GetDistanceFromOwner(MyID)
 	if dist > GetMoveBounds() then 
 		ReturnToMoveHold = 0
@@ -552,7 +553,8 @@ function	OnFOLLOW_ST ()
 	if (dist <= DiagonalDist(FollowStayBack+1)) then		--  DESTINATION_ARRIVED_IN 
 		FollowTryCount=0
 		MyState = IDLE_ST
-		TraceAI ("FOLLOW_ST -> IDLE_ST ownerpos: "..formatpos(GetV(V_POSITION,GetV(V_OWNER,MyID))).."my pos history:"..formatmypos(10))
+		TraceAI ("FOLLOW_ST -> IDLE_ST")
+		-- TraceAI ("FOLLOW_ST -> IDLE_ST ownerpos: "..formatpos(GetV(V_POSITION,GetV(V_OWNER,MyID))).."my pos history:"..formatmypos(10))
 		if (FastChangeCount < FastChangeLimit and FastChange_F2I==1) then
 			FastChangeCount = FastChangeCount+1
 			return OnIDLE_ST()
@@ -635,7 +637,7 @@ function	OnFOLLOW_ST ()
 				FollowTryCount=0
 			end
 		end
-		TraceAI ("FOLLOW_ST -> FOLLOW_ST ownerpos: "..formatpos(GetV(V_POSITION,GetV(V_OWNER,MyID))).."my pos history:"..formatmypos(10).."dest cell"..formatpos(MyDestX,MyDestY))
+		-- TraceAI ("FOLLOW_ST -> FOLLOW_ST ownerpos: "..formatpos(GetV(V_POSITION,GetV(V_OWNER,MyID))).."my pos history:"..formatmypos(10).."dest cell"..formatpos(MyDestX,MyDestY))
 		return
 	end
 end
@@ -859,6 +861,7 @@ function	OnCHASE_ST ()
 	else
 		TraceAI("Not in range, and can't use chase skill")
 	end
+	-- TraceAI("OnCHASE_ST MySkill2: " .. MySkill)
 	if (GetTact(TACT_CHASE,MyEnemy)~=1) then
 		local alt = 0
 		if (ChaseGiveUpCount >= 4 and MyPosX[1] == MyPosX[3]  and MyPosY[1]==MyPosY[3]) then
@@ -947,6 +950,7 @@ end
 
 
 function OnATTACK_ST ()
+	-- TraceAI ("OnATTACK_ST")	
 	TraceAI ("OnATTACK_ST MyEnemy: "..MyEnemy.." MyPos "..formatpos(GetV(V_POSITION,MyID)).." ("..GetV(V_MOTION,MyID)..") enemypos "..formatpos(GetV(V_POSITION,MyEnemy)).." ("..GetV(V_MOTION,MyEnemy)..") MyTarget: "..GetV(V_TARGET,MyID))	
 	if (true == IsOutOfSight(MyID,MyEnemy)) then -- first thing's first, if enemy is gone drop it. 
 		MyState = IDLE_ST
@@ -1113,14 +1117,14 @@ function OnATTACK_ST ()
 				skill_level=11
 			end
 			local SkillList=GetTargetedSkills(MyID)
-			TraceAI("Begin autoskill routine")
+			-- TraceAI("Begin autoskill routine")
 			local availsp = GetV(V_SP,MyID)
 			if BerserkMode~=1 or Berserk_IgnoreMinSP ~=1 then
 				availsp = availsp - tact_sp
 			end
 			for i,v in ipairs(SkillList) do
 				skilltype=v[1]
-				TraceAI("skilltype ".. skilltype.." MySkillUsedCount "..MySkillUsedCount.." tact_skill ".. tact_skill.." tact_skillclass"..tact_skillclass.."v"..v[1].." "..v[2].." "..v[3])		
+				-- TraceAI("skilltype ".. skilltype.." MySkillUsedCount "..MySkillUsedCount.." tact_skill ".. tact_skill.." tact_skillclass"..tact_skillclass.."v"..v[1].." "..v[2].." "..v[3])		
 				if v[2]~=0 then
 					if IsInAttackSight(MyID,MyEnemy,v[2],v[3])==true then
 						if (skilltype == MOB_ATK and UseHomunSSkillAttack==1 and AutoMobMode~=0 and (MySkillUsedCount < tact_skill or tact_skill==SKILL_ALWAYS or (BerserkMode==1 and Berserk_SkillAlways==1))) then
@@ -1170,7 +1174,7 @@ function OnATTACK_ST ()
 						end
 					end
 				end
-				TraceAI("skill selected "..skilltouse[2])
+				-- TraceAI("skill selected "..skilltouse[2])
 			end
 		end
 		-- Now we finalize the selection
@@ -2007,7 +2011,7 @@ function	GetEnemyList (myid,aggro)
 		mskill,mlevel=GetMinionSkill(MyID)
 	end
 	local HomunType = GetV(V_HOMUNTYPE,myid)
-	TraceAI("GetEnemyList with aggro "..aggro)
+	-- TraceAI("GetEnemyList with aggro "..aggro)
 	for k,v in pairs(Targets) do
 		tact = GetTact(TACT_BASIC,k)
 		casttact=GetTact(TACT_CAST,k)
@@ -2137,7 +2141,7 @@ function SelectEnemy(enemys,curenemy)
 	else 
 		AllTargetUnreachable=0
 	end
-	TraceAI("SelectEnemy returning target "..result)
+	-- TraceAI("SelectEnemy returning target "..result)
 	return result
 end
 function convpriority(base,agr)
@@ -2223,7 +2227,7 @@ function DoAutoBuffs(buffmode)
 			return 1
 		end
 	end
-	TraceAI("DoAutoBuffs"..buffmode)
+	-- TraceAI("DoAutoBuffs"..buffmode)
 	if (UseProvokeOwner == buffmode and ProvokeOwnerTimeout ~=-1) then
 		if (GetTick() > ProvokeOwnerTimeout) then
 			local skill,level= GetProvokeSkill(MyID)
