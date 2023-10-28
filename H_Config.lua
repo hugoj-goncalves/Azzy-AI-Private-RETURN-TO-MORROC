@@ -63,6 +63,7 @@ DieterPyroclasticLevel   = 10
 UseEiraOveredBoost       = 0
 HealSelfHP               = 50 
 HealOwnerHP              = 70 
+HealIdleHP               = 80 
 UseAutoHeal              = 1
 FollowStayBack           = 2
 StationaryAggroDist      = 12
